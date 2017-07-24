@@ -1,0 +1,110 @@
+
+def find3SumCombinationsPermutations(num, dart_values):
+    c_result = 0
+    p_result = 0
+    count = 1
+    for i in range(len(dart_values) - 2):
+        if dart_values[i] == dart_values[i - 1]:
+            continue
+        pivot_a = i + 1
+        pivot_b = len(dart_values) - 1
+        while True:
+            if pivot_a >= pivot_b:
+                break
+            if dart_values[i] + dart_values[pivot_a] + dart_values[pivot_b] == num:
+                count_i = [dart_values[i], dart_values[pivot_a], dart_values[pivot_b]].count(dart_values[i])
+                count_a = [dart_values[i], dart_values[pivot_a], dart_values[pivot_b]].count(dart_values[pivot_a])
+                if count_i == 3:
+                    count = 3
+                elif count_i == 2 or count_a == 2:
+                    count = 2
+                p_result += int(math.factorial(3) / math.factorial(count))
+                c_result += 1
+
+                while pivot_a < pivot_b and dart_values[pivot_a] == dart_values[pivot_a + 1]:
+                    pivot_a += 1
+                while pivot_a < pivot_b and dart_values[pivot_b] == dart_values[pivot_b - 1]:
+                    pivot_b -= 1
+
+                pivot_a += 1
+                pivot_b -= 1
+
+            elif dart_values[i] + dart_values[pivot_a] + dart_values[pivot_b] < num:
+                pivot_a += 1
+            else:
+                pivot_b -= 1
+            count = 1
+    return c_result, p_result
+
+
+
+
+def findPermutaionsCombinations(num):
+    dart_values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28,
+       30, 32, 33, 34, 36, 38, 39, 40, 42, 45, 48, 50, 51, 54, 57, 60]
+    visited = {}
+    c_result = 0
+    p_result = 0
+    temp_comb = []
+    visited_key = ""
+    for i in range(len(dart_values)):
+        if dart_values[i] > num:
+            continue
+        for j in range(len(dart_values)):
+            if dart_values[i] + dart_values[j] > num:
+                continue
+            for k in range(len(dart_values)):
+                if dart_values[i] + dart_values[j] + dart_values[k] > num:
+                    break
+                if dart_values[i] + dart_values[j] + dart_values[k] == num:
+                    p_result += 1
+                    temp_comb.append(dart_values[i])
+                    temp_comb.append(dart_values[j])
+                    temp_comb.append(dart_values[k])
+                    temp_comb.sort()
+                    for index in range(3):
+                        if index != 2:
+                            visited_key += str(temp_comb[index]) + ","
+                        else:
+                            visited_key += str(temp_comb[index])
+                    if visited_key not in visited:
+                        visited[visited_key] = True
+                        print(dart_values[i], dart_values[j], dart_values[k])
+                        c_result += 1
+                    visited_key = ""
+                    temp_comb.clear()
+    return c_result, p_result
+
+
+def find3SumPermutations(num):
+    target_values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28,
+                   30, 32, 33, 34, 36, 38, 39, 40, 42, 45, 48, 50, 51, 54, 57, 60]
+    dart_values = target_values * 3
+    dart_values.sort()
+    p_result = 0
+    c_result = 0
+    for i in range(len(dart_values) - 2):
+        if dart_values[i] == dart_values[i - 1]:
+            continue
+        pivot_a = i + 1
+        pivot_b = len(dart_values) - 1
+        count = 1
+        while True:
+            if pivot_a >= pivot_b:
+                break
+            if dart_values[i] + dart_values[pivot_a] + dart_values[pivot_b] == num:
+                count_i = [dart_values[i], dart_values[pivot_a], dart_values[pivot_b]].count(dart_values[i])
+                count_a = [dart_values[i], dart_values[pivot_a], dart_values[pivot_b]].count(dart_values[pivot_a])
+                if count_i == 3:
+                    count = 3
+                elif count_i == 2 or count_a == 2:
+                    count = 2
+                p_result += int(math.factorial(3) / count)
+                pivot_a += 1
+                pivot_b -= 1
+            elif dart_values[i] + dart_values[pivot_a] + dart_values[pivot_b] < num:
+                pivot_a += 1
+            else:
+                pivot_b -= 1
+            count = 1
+    return c_result, p_result
